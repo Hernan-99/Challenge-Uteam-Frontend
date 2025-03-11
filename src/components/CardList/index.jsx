@@ -4,7 +4,7 @@ import { CardItem } from "./CardItem";
 const CardList = ({ data }) => {
   return (
     <>
-      <h1>Personajes</h1>
+      <h2 className="text-6xl text-white text-center">Personajes</h2>
       <section className="flex justify-center flex-wrap">
         {data?.map((el) => (
           <CardItem key={el.id} data={el} />
