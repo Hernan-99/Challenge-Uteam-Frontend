@@ -1,3 +1,3 @@
 import md5 from "md5";
-
-export const hashCode = (ts, privKey, pubKey) => md5(ts, privKey, pubKey);
+// Función para generar el hash
+export const hashedCode = (ts, privKey, pubKey) => md5(ts + privKey + pubKey);
