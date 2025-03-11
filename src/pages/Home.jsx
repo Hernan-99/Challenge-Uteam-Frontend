@@ -4,13 +4,18 @@ import { useEffect } from "react";
 import { useFetch } from "../hooks/useFetch";
 import CardList from "../components/CardList";
 import { finalUrl } from "../utils/finalUrlGenerate";
+import Header from "../components/Header";
+import Form from "../components/Form";
+import { Loader } from "../components/Loader/Loader";
+import { Message } from "../components/MessageError/Message";
+import { Hero } from "../components/Header/Hero";
 
 const publicKey = "b8fcd5e1b0df371545657e344604431b";
 const privateKey = "ad74c780d5aba598157e2c2035b2488a8743e859";
 
 const Home = () => {
   const [url, setUrl] = useState("");
-  // const [search, setSearch] = useState(null);
+  const [search, setSearch] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -27,23 +32,47 @@ const Home = () => {
     }
   }, [fetchError]);
 
+  const handleSearch = (data) => {
+    setSearch(data);
+    setError(null);
+  };
   const character = data?.data?.results || [];
+  const filteredPersonajes = character.filter((personaje) => {
+    const matchesId = search?.id
+      ? personaje.id.toString().includes(search.id)
+      : true;
+    const matchesName = search?.name
+      ? personaje.name.toLowerCase().includes(search.name.toLowerCase())
+      : true;
+    return matchesId && matchesName;
+  });
 
-  // if (loading) return <p>Cargando...</p>;
-  // if (error) return <p>error</p>;
+  if (loading) return <Loader />;
+  if (error)
+    return (
+      <Message
+        msj={`Error ${error.status}: ${error.statusText}`}
+        bgColor="#dc3545"
+      />
+    );
 
   return (
-    <MainLayout>
-      <h1>main</h1>
-      {loading && <p>cargando</p>}
-      {error && <p>error</p>}
+    <>
+      <Header />
+      <Hero>
+        <Form handleSearch={handleSearch} />
+      </Hero>
+      <MainLayout>
+        {loading && <p>cargando</p>}
+        {error && <p>error</p>}
 
-      {character.length > 0 ? (
-        <CardList data={character} />
-      ) : (
-        !loading && <p>No se encontraron personajes</p>
-      )}
-    </MainLayout>
+        {filteredPersonajes.length > 0 ? (
+          <CardList data={filteredPersonajes} />
+        ) : (
+          !loading && <p>No se encontraron personajes</p>
+        )}
+      </MainLayout>
+    </>
   );
 };
 
