@@ -5,7 +5,7 @@ const CardList = ({ data }) => {
   return (
     <>
       <h1>Personajes</h1>
-      <section>
+      <section className="flex justify-center flex-wrap">
         {data?.map((el) => (
           <CardItem key={el.id} data={el} />
         ))}
