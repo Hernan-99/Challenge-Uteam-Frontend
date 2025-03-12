@@ -24,7 +24,7 @@ const Home = () => {
   }, []);
   console.log(url);
 
-  const { data, loading, error: fetchError } = useFetch(url);
+  const { data, loading, fetchError } = useFetch(url);
 
   useEffect(() => {
     if (fetchError) {
