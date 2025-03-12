@@ -5,10 +5,8 @@ import { useFetch } from "../hooks/useFetch";
 import CardList from "../components/CardList";
 import { finalUrl } from "../utils/finalUrlGenerate";
 import Header from "../components/Header";
-import Form from "../components/Form";
 import { Loader } from "../components/Loader/Loader";
 import { Message } from "../components/MessageError/Message";
-import { Hero } from "../components/Header/Hero";
 
 const publicKey = "b8fcd5e1b0df371545657e344604431b";
 const privateKey = "ad74c780d5aba598157e2c2035b2488a8743e859";
