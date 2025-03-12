@@ -14,7 +14,6 @@ const Form = ({ handleSearch }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     handleSearch(form);
-    setForm(initialForm);
   };
 
   const handleReset = () => {

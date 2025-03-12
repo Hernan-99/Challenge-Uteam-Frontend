@@ -1,10 +1,11 @@
 import { Hero } from "./Hero";
 import { Navbar } from "./Navbar";
 
-const Header = () => {
+const Header = ({ handleSearch }) => {
   return (
     <header>
       <Navbar />
+      <Hero handleSearch={handleSearch} />
     </header>
   );
 };
