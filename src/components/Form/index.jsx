@@ -41,12 +41,16 @@ const Form = ({ handleSearch }) => {
           placeholder="Buscar personaje"
           onChange={handleChange}
           value={form.name}
-          className="w-[90%] p-4 rounded-2xl"
+          className="w-[90%] p-4 rounded-2xl mb-5"
         />
       </div>
       <div className="mb-5">
-        <CustomButton value="Buscar" />
-        <CustomButton value="Reset" handleClick={handleReset} />
+        <CustomButton value="Buscar" bgColor="#ec1d24" />
+        <CustomButton
+          value="Reset"
+          bgColor="#ec1d24"
+          handleClick={handleReset}
+        />
       </div>
     </form>
   );
