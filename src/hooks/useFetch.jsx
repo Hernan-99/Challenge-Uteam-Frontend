@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 export const useFetch = (url) => {
   const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export const useFetch = (url) => {
         if (!res.ok) {
           let err = new Error("Error en la petición Fetch");
           err.status = res.status || "00";
-          err.statusText = res.statusText || "Ocurrió un error";
+          err.statusText = res.statusText || "Ocurrió un fetchError";
           throw err;
         }
 
@@ -26,12 +26,12 @@ export const useFetch = (url) => {
 
         if (!signal.aborted) {
           setData(json);
-          setError(null);
+          setFetchError(null);
         }
-      } catch (error) {
+      } catch (fetchError) {
         if (!signal.aborted) {
           setData(null);
-          setError(error);
+          setFetchError(fetchError);
         }
       } finally {
         if (!signal.aborted) {
@@ -45,5 +45,5 @@ export const useFetch = (url) => {
     return () => abortController.abort();
   }, [url]);
 
-  return { data, error, loading };
+  return { data, fetchError, loading };
 };
