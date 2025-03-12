@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { CustomButton } from "../CustomButton/CustomButton";
 
 const initialForm = {
   name: "",
@@ -44,18 +45,8 @@ const Form = ({ handleSearch }) => {
         />
       </div>
       <div className="mb-5">
-        <button
-          type="submit"
-          className="bg-[#ec1d24] py-3 px-14 me-2 rounded-sm text-white"
-        >
-          Buscar
-        </button>
-        <button
-          onClick={handleReset}
-          className="bg-[#ec1d24] py-3 px-14 mx-3 rounded-sm  text-white"
-        >
-          Reset
-        </button>
+        <CustomButton value="Buscar" />
+        <CustomButton value="Reset" handleClick={handleReset} />
       </div>
     </form>
   );
