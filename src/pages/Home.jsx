@@ -58,10 +58,8 @@ const Home = () => {
 
   return (
     <>
-      <Header />
-      <Hero>
-        <Form handleSearch={handleSearch} />
-      </Hero>
+      <Header handleSearch={handleSearch} />
+
       <MainLayout>
         {loading && <p>cargando</p>}
         {error && <p>error</p>}
