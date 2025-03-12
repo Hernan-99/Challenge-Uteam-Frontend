@@ -67,7 +67,9 @@ const Home = () => {
         {filteredPersonajes.length > 0 ? (
           <CardList data={filteredPersonajes} />
         ) : (
-          !loading && <p>No se encontraron personajes</p>
+          !loading && (
+            <Message msj={`No se encontraron personajes.`} bgColor="#dc3545" />
+          )
         )}
       </MainLayout>
     </>
