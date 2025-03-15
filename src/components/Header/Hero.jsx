@@ -1,9 +1,25 @@
 import Form from "../Form";
 
-export const Hero = ({ handleSearch }) => {
+export const Hero = ({
+  search,
+  setSearch,
+  handleSearch,
+  handleResetSearch,
+  isSearched,
+  dataToEdit,
+  onSubmit
+}) => {
   return (
-    <section className="flex w-[100%] h-80">
-      <Form handleSearch={handleSearch} />
+    <section className="flex w-[100%]">
+      <Form
+        search={search}
+        setSearch={setSearch}
+        handleSearch={handleSearch}
+        handleResetSearch={handleResetSearch}
+        isSearched={isSearched}
+        dataToEdit={dataToEdit}
+        onSubmit={onSubmit}
+      />
     </section>
   );
 };

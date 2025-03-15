@@ -1,29 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CustomButton } from "../CustomButton/CustomButton";
+import { FormSearch } from "./FormSearch";
+import { FormCreateUpdate } from "./FormCreateUpdate";
 
-const initialForm = {
-  name: "",
-};
+const Form = ({
+  search,
+  setSearch,
+  handleSearch,
+  handleResetSearch,
+  isSearched,
+  dataToEdit,
+  onSubmit,
+}) => {
+  const [showFormSearch, setShowFormSearch] = useState(false);
+  const [showFormCreate, setShowFormCreate] = useState(false);
 
-const Form = ({ handleSearch }) => {
-  const [form, setForm] = useState(initialForm);
+  useEffect(() => {
+    if (dataToEdit) {
+      setShowFormCreate(true);
+      setShowFormSearch(false);
+    }
+  }, [dataToEdit]);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleShowSearch = () => {
+    setShowFormSearch(true);
+    setShowFormCreate(false);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    handleSearch(form);
+  const handleShowCreate = () => {
+    setShowFormCreate(true);
+    setShowFormSearch(false);
   };
 
-  const handleReset = () => {
-    setForm(initialForm);
-    handleSearch(null);
+  const handleCancel = () => {
+    setShowFormSearch(false);
+    setShowFormCreate(false);
   };
+
   return (
-    <form
-      onSubmit={handleSubmit}
+    <section
       style={{
         textAlign: "center",
         display: "flex",
@@ -34,27 +49,41 @@ const Form = ({ handleSearch }) => {
       }}
     >
       <div>
-        <input
-          type="text"
-          name="name"
-          id="buscar"
-          placeholder="Buscar personaje"
-          onChange={handleChange}
-          value={form.name}
-          className="w-[90%] p-4 rounded-2xl mb-5"
-        />
+        {!showFormSearch && !dataToEdit && (
+          <CustomButton
+            value="Buscar personaje"
+            bgColor="#ec1d24"
+            handleClick={handleShowSearch}
+          />
+        )}
+        {!showFormCreate && !dataToEdit && (
+          <CustomButton
+            value="Crear personaje"
+            bgColor="#ec1d24"
+            handleClick={handleShowCreate}
+          />
+        )}
       </div>
-      <div className="mb-5">
-        <CustomButton value="Buscar" bgColor="#ec1d24" />
-        <CustomButton
-          value="Reset"
-          bgColor="#ec1d24"
-          handleClick={handleReset}
+      {showFormSearch && (
+        <FormSearch
+          search={search}
+          setSearch={setSearch}
+          handleSearch={handleSearch}
+          handleResetSearch={handleResetSearch}
+          handleCancel={handleCancel}
+          isSearched={isSearched}
+          dataToEdit={dataToEdit}
         />
-      </div>
-    </form>
+      )}
+      {showFormCreate && (
+        <FormCreateUpdate
+          onSubmit={onSubmit}
+          dataToEdit={dataToEdit}
+          handleCancel={handleCancel}
+        />
+      )}
+    </section>
   );
 };
 
-// Exportación del componente
 export default Form;
