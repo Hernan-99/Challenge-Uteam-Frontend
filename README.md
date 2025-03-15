@@ -3,12 +3,12 @@
 Se utilizo la API de Marvel para obtener información sobre personajes de Marvel y buscar por nombre. Se limito la obtencion a 20 items
 
 ## Tecnologias usadas
-![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black) 
+
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 ![HTML](https://img.shields.io/badge/HTML-E34F26?logo=html5&logoColor=white)
 ![CSS](https://img.shields.io/badge/CSS-1572B6?logo=css3&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=white)
-
 
 ## Instalacion
 
@@ -30,7 +30,14 @@ cd Challenge-Uteam-Frontend
 npm install
 ```
 
-3. Iniciar servidor
+4. Crear un archivo .env en la raiz del proyecto y poner claves
+
+```js
+VITE_PUBLIC_KEY=*****************
+VITE_PRIVATE_KEY=*****************
+```
+
+5. Iniciar servidor
 
 ```bash
 npm run dev
