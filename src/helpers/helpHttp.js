@@ -38,26 +38,6 @@ const helpHttp = () => {
     }
   };
 
-  const getById = async (id) => {
-    try {
-      const charactersFind = characters.find((el) => el.id === id);
-      if (characters) return charactersFind;
-
-      const url = finalUrl();
-      const res = await fetch(url);
-
-      if (!res.ok) {
-        throw new Error(`Error: ${res.status}`);
-      }
-
-      const data = await res.json();
-      return data?.data?.results[0] || null;
-    } catch (error) {
-      console.log("Error: ", error.message);
-      return null;
-    }
-  };
-
   // UPDATE
   const put = async (id, character) => {
     const index = characters.findIndex((el) => el.id === id);
@@ -86,7 +66,6 @@ const helpHttp = () => {
   return {
     post,
     getAll,
-    getById,
     put,
     del,
   };
