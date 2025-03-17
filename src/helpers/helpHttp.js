@@ -17,7 +17,7 @@ const helpHttp = () => {
         },
       };
 
-      characters.push(newCharacter);
+      characters = [newCharacter, ...characters];
       return newCharacter;
     } catch (err) {
       //   console.log(`Error al crear el personajes: ${err.message}`);
