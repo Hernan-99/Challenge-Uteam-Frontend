@@ -1,7 +1,6 @@
-import React from "react";
+export const CardItem = ({ dataCharacters, handleDelete, setDataToEdit }) => {
+  const { id, name, thumbnail } = dataCharacters;
 
-export const CardItem = ({ data, handleUpdate, handleDelete }) => {
-  const { id, name, thumbnail } = data;
   return (
     <article className="w-[300px] m-4 bg-[#e62429] rounded-lg">
       <img
@@ -10,19 +9,17 @@ export const CardItem = ({ data, handleUpdate, handleDelete }) => {
         alt={`${name}`}
       />
       <div className="w-full font-semibold text-white">
-        <h3 className="mb-2 text-center">{data.name}</h3>
+        <h3 className="mb-2 text-center">{name}</h3>
         <div className="flex mb-5 justify-around">
           <button
             className="py-2 px-4 bg-[#202020]"
-            onClick={() => {
-              handleDelete(id);
-            }}
+            onClick={() => handleDelete(id)}
           >
             Eliminar
           </button>
           <button
             className="py-2 px-4 bg-[#202020]"
-            onClick={() => handleUpdate(data)}
+            onClick={() => setDataToEdit(dataCharacters)}
           >
             Editar
           </button>

@@ -1,24 +1,18 @@
 import Form from "../Form";
 
 export const Hero = ({
-  search,
-  setSearch,
-  handleSearch,
-  handleResetSearch,
-  isSearched,
+  handleCreate,
   dataToEdit,
-  onSubmit
+  setDataToEdit,
+  handleUpdate,
 }) => {
   return (
     <section className="flex w-[100%]">
       <Form
-        search={search}
-        setSearch={setSearch}
-        handleSearch={handleSearch}
-        handleResetSearch={handleResetSearch}
-        isSearched={isSearched}
+        handleCreate={handleCreate}
         dataToEdit={dataToEdit}
-        onSubmit={onSubmit}
+        setDataToEdit={setDataToEdit}
+        handleUpdate={handleUpdate}
       />
     </section>
   );

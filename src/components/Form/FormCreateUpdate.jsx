@@ -6,14 +6,20 @@ const initialForm = {
   description: "",
   thumbnailUrl: "",
 };
-export const FormCreateUpdate = ({ onSubmit, dataToEdit, handleCancel }) => {
-  const [form, setForm] = useState(initialForm);
+
+export const FormCreateUpdate = ({
+  handleCreate,
+  handleUpdate,
+  dataToEdit,
+  setDataToEdit,
+  handleCancel,
+}) => {
+  const [form, setForm] = useState(dataToEdit || initialForm);
 
   useEffect(() => {
     if (dataToEdit) {
       setForm({
-        name: dataToEdit.name || "",
-        description: dataToEdit.description || "",
+        ...dataToEdit,
         thumbnailUrl: dataToEdit.thumbnail
           ? `${dataToEdit.thumbnail.path}.${dataToEdit.thumbnail.extension}`
           : "",
@@ -25,16 +31,23 @@ export const FormCreateUpdate = ({ onSubmit, dataToEdit, handleCancel }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(form);
-    if (!dataToEdit) {
-      setForm(initialForm);
+    if (!form.name.trim() || !form.thumbnailUrl.trim()) return;
+
+    if (dataToEdit) {
+      await handleUpdate(form);
+    } else {
+      await handleCreate(form);
     }
+
+    setDataToEdit(null);
+    setForm(initialForm);
   };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -47,13 +60,11 @@ export const FormCreateUpdate = ({ onSubmit, dataToEdit, handleCancel }) => {
       }}
     >
       <div>
-        <h3 className="text-white text-6xl mb-10">
-          {dataToEdit ? "Actualizar Personaje" : "Crear Personaje"}
-        </h3>
+        <h3 className="text-white text-6xl mb-10"></h3>
         <div>
           <input
             type="text"
-            name="name" // Use name attribute for easy handling
+            name="name" 
             value={form.name}
             onChange={handleChange}
             className="w-[90%] p-4 rounded-2xl mb-5"
@@ -64,7 +75,7 @@ export const FormCreateUpdate = ({ onSubmit, dataToEdit, handleCancel }) => {
 
         <div>
           <textarea
-            name="description" // Use name attribute for easy handling
+            name="description" 
             value={form.description}
             onChange={handleChange}
             className="w-[90%] p-4 rounded-2xl mb-5"
@@ -76,7 +87,7 @@ export const FormCreateUpdate = ({ onSubmit, dataToEdit, handleCancel }) => {
         <div>
           <input
             type="text"
-            name="thumbnailUrl" // Use name attribute for easy handling
+            name="thumbnailUrl" 
             value={form.thumbnailUrl}
             onChange={handleChange}
             className="w-[90%] p-4 rounded-2xl mb-5"

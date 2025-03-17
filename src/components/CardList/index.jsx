@@ -1,17 +1,17 @@
 import React from "react";
 import { CardItem } from "./CardItem";
 
-const CardList = ({ dataCharacter, handleUpdate, handleDelete }) => {
+const CardList = ({ data, handleDelete, setDataToEdit }) => {
   return (
     <>
       <h2 className="text-6xl text-white text-center">Personajes</h2>
       <section className="flex justify-center flex-wrap">
-        {dataCharacter?.map((el) => (
+        {data?.map((el) => (
           <CardItem
             key={el.id}
-            data={el}
-            handleUpdate={handleUpdate}
+            dataCharacters={el}
             handleDelete={handleDelete}
+            setDataToEdit={setDataToEdit}
           />
         ))}
       </section>

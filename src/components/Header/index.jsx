@@ -1,26 +1,15 @@
 import { Hero } from "./Hero";
 import { Navbar } from "./Navbar";
 
-const Header = ({
-  search,
-  setSearch,
-  handleSearch,
-  handleResetSearch,
-  isSearched,
-  dataToEdit,
-  onSubmit
-}) => {
+const Header = ({ handleCreate, dataToEdit, setDataToEdit, handleUpdate }) => {
   return (
     <header className="mb-10">
       <Navbar />
       <Hero
-        search={search}
-        setSearch={setSearch}
-        handleSearch={handleSearch}
-        handleResetSearch={handleResetSearch}
-        isSearched={isSearched}
         dataToEdit={dataToEdit}
-        onSubmit={onSubmit}
+        setDataToEdit={setDataToEdit}
+        handleCreate={handleCreate}
+        handleUpdate={handleUpdate}
       />
     </header>
   );

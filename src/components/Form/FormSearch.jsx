@@ -5,13 +5,11 @@ export const FormSearch = ({
   search,
   setSearch,
   handleSearch,
-  handleResetSearch,
-  isSearched,
   handleCancel,
 }) => {
   return (
     <form
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={handleSearch}
       style={{
         textAlign: "center",
         display: "flex",
@@ -26,9 +24,7 @@ export const FormSearch = ({
       </div>
       <div>
         <input
-          type="text"
-          name="name"
-          id="buscar"
+          type="search"
           placeholder="A-Bomb (HAS)"
           onChange={(e) => setSearch(e.target.value)}
           value={search}
@@ -36,13 +32,9 @@ export const FormSearch = ({
         />
       </div>
       <div className="mb-5">
+        <CustomButton value="Buscar" bgColor="#ec1d24" />
         <CustomButton
-          value={isSearched ? "Reset" : "Buscar"}
-          bgColor="#ec1d24"
-          handleClick={isSearched ? handleResetSearch : handleSearch}
-        />
-        <CustomButton
-          value="Cancelar"
+          value="Cerrar"
           bgColor="#ec1d24"
           handleClick={handleCancel}
         />

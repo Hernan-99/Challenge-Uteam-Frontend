@@ -4,151 +4,111 @@ import { useEffect } from "react";
 import CardList from "../components/CardList";
 import Header from "../components/Header";
 import { Loader } from "../components/Loader/Loader";
-import { Message } from "../components/MessageError/Message";
 import helpHttp from "../helpers/helpHttp";
+import { Message } from "../components/MessageError/Message";
 
 const api = helpHttp();
 
 const Home = () => {
-  const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
-  const [filterData, setFilterData] = useState([]);
   const [dataToEdit, setDataToEdit] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isSearched, setIsSearched] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     setError(null);
 
     const getData = async () => {
-      const filterDuplicates = (newData, prevData) => {
-        return newData.filter(
-          (item) => !prevData.some((prevItem) => prevItem.id === item.id)
-        );
-      };
-
       try {
-        const data = await api.getAll();
-        if (data <= 0) throw new Error("No se encontraron datos.");
-        setData((prevData) => {
-          const newData = filterDuplicates(data, prevData);
-          return [...prevData, ...newData];
-        });
-
-        setFilterData((prevData) => {
-          const newData = filterDuplicates(data, prevData);
-          return [...prevData, ...newData];
-        });
+        const dataCharacters = await api.getAll();
+        if (dataCharacters <= 0) throw new Error("No se encontraron datos.");
+        setData(dataCharacters);
       } catch (err) {
         setError(err.message || "Error al obtener los datos.");
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     };
-
     getData();
   }, []);
 
-  const handleResetSearch = () => {
-    setSearch("");
-    setFilterData(data);
-    setIsSearched(false);
-  };
-
   const handleCreate = async (character) => {
     setError(null);
-    const createCharacter = await api.post(character);
-    if (createCharacter) {
-      setData((prevData) => {
-        if (prevData.some((el) => el.id === createCharacter.id))
-          return prevData;
-        return [...prevData, createCharacter];
+    setLoading(true);
+    try {
+      const createCharacter = await api.post(character);
+
+      setData((prevdata) => {
+        if (prevdata.some((char) => char.id === createCharacter.id)) {
+          return prevdata;
+        }
+        return [createCharacter, ...prevdata];
       });
-      setFilterData((prevData) => [...prevData, createCharacter]);
-    } else {
-      setError("Error al crear el personaje.");
+    } catch (err) {
+      setError(err.message || "Error al crear el personaje.");
     }
+    setLoading(false);
   };
 
   const handleUpdate = async (character) => {
+    setLoading(true);
     setError(null);
-    const updateCharacter = await api.put(dataToEdit.id, character);
-    if (updateCharacter) {
-      setData((prevData) =>
-        prevData.map((char) =>
-          char.id === dataToEdit.id ? updateCharacter : char
-        )
-      );
-      setFilterData((prevData) =>
-        prevData.map((char) =>
-          char.id === dataToEdit.id ? updateCharacter : char
-        )
-      );
-      setDataToEdit(null);
-    } else {
-      setError("Error al actualizar el personaje.");
+
+    try {
+      const updatedCharacter = await api.put(character.id, character);
+
+      if (updatedCharacter) {
+        setData((prevCharacters) =>
+          prevCharacters.map((char) =>
+            char.id === updatedCharacter.id ? updatedCharacter : char
+          )
+        );
+        setDataToEdit(null);
+      }
+    } catch (err) {
+      setError(err.message || "Error al actualizar el personaje.");
     }
+    setLoading(false);
   };
 
   const handleDelete = async (id) => {
-    const deleteCharacter = await api.del(id);
+    setError(null);
+    setLoading(true);
+    // console.log("Eliminando personaje con ID:", id);
+    try {
+      const deleteCharacter = await api.del(id);
+      if (!deleteCharacter)
+        throw new Error(`No se pudo eliminar el personaje con id: ${id}`);
 
-    if (deleteCharacter) {
-      setData(data.filter((el) => el.id !== id));
-      setFilterData(filterData.filter((el) => el.id !== id));
-    } else {
-      setError(`No se pudo eliminar el personaje con id: ${id}`);
+      setData((prevdata) =>
+        prevdata.filter((character) => character.id !== id)
+      );
+    } catch (err) {
+      setError(err.message || "Error al eliminar el personaje.");
     }
-  };
-
-  const handleSubmit = async (character) => {
-    if (dataToEdit) {
-      handleUpdate(character);
-    } else {
-      handleCreate(character);
-    }
-  };
-
-  const handleSearch = () => {
-    const filterCharacter = data.filter((el) =>
-      el.name.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilterData(filterCharacter);
-    setIsSearched(true);
-
-    if (filterCharacter.length === 0) {
-      setError("No se encontraron personajes.");
-    } else {
-      setError(null);
-    }
+    setLoading(false);
   };
 
   if (loading) return <Loader />;
-  if (error) return <Message msj={`Error: ${error}`} bgColor="#dc3545" />;
+  if (error) return <Message msj={`${error}`} bgColor="#dc3545" />;
 
   return (
     <>
       <Header
-        search={search}
-        setSearch={setSearch}
-        handleSearch={handleSearch}
-        handleResetSearch={handleResetSearch}
-        isSearched={isSearched}
-        onSubmit={handleSubmit}
+        handleCreate={handleCreate}
+        handleUpdate={handleUpdate}
         dataToEdit={dataToEdit}
+        setDataToEdit={setDataToEdit}
       />
 
       <MainLayout>
         {loading && <Loader />}
         {error && <Message msj={error} bgColor="#dc3545" />}
-
-        {!loading && filterData.length > 0 ? (
+        {!loading && data.length > 0 ? (
           <CardList
-            dataCharacter={filterData}
-            handleUpdate={setDataToEdit}
+            data={data}
             handleDelete={handleDelete}
+            setDataToEdit={setDataToEdit}
           />
         ) : (
           !loading && (

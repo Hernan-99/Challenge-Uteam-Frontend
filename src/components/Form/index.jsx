@@ -1,42 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { CustomButton } from "../CustomButton/CustomButton";
-import { FormSearch } from "./FormSearch";
+// import { FormSearch } from "./FormSearch";
 import { FormCreateUpdate } from "./FormCreateUpdate";
+import { useEffect, useState } from "react";
+import { CustomButton } from "../CustomButton/CustomButton";
 
-const Form = ({
-  search,
-  setSearch,
-  handleSearch,
-  handleResetSearch,
-  isSearched,
-  dataToEdit,
-  onSubmit,
-}) => {
-  const [showFormSearch, setShowFormSearch] = useState(false);
+const Form = ({ handleCreate, dataToEdit, setDataToEdit, handleUpdate }) => {
   const [showFormCreate, setShowFormCreate] = useState(false);
 
   useEffect(() => {
     if (dataToEdit) {
       setShowFormCreate(true);
-      setShowFormSearch(false);
     }
   }, [dataToEdit]);
 
-  const handleShowSearch = () => {
-    setShowFormSearch(true);
-    setShowFormCreate(false);
-  };
-
   const handleShowCreate = () => {
     setShowFormCreate(true);
-    setShowFormSearch(false);
   };
 
   const handleCancel = () => {
-    setShowFormSearch(false);
     setShowFormCreate(false);
   };
-
   return (
     <section
       style={{
@@ -49,13 +31,6 @@ const Form = ({
       }}
     >
       <div>
-        {!showFormSearch && !dataToEdit && (
-          <CustomButton
-            value="Buscar personaje"
-            bgColor="#ec1d24"
-            handleClick={handleShowSearch}
-          />
-        )}
         {!showFormCreate && !dataToEdit && (
           <CustomButton
             value="Crear personaje"
@@ -64,21 +39,13 @@ const Form = ({
           />
         )}
       </div>
-      {showFormSearch && (
-        <FormSearch
-          search={search}
-          setSearch={setSearch}
-          handleSearch={handleSearch}
-          handleResetSearch={handleResetSearch}
-          handleCancel={handleCancel}
-          isSearched={isSearched}
-          dataToEdit={dataToEdit}
-        />
-      )}
+
       {showFormCreate && (
         <FormCreateUpdate
-          onSubmit={onSubmit}
+          handleCreate={handleCreate}
           dataToEdit={dataToEdit}
+          setDataToEdit={setDataToEdit}
+          handleUpdate={handleUpdate}
           handleCancel={handleCancel}
         />
       )}
